@@ -3,19 +3,20 @@
 import scapy.all as scapy
 import argparse
 '''
-def scan(ip):
-    scapy.arping(ip)
-
-scan("192.168.88.1/24")
+Note:
 update scapy to recent version to accept ip range :
 pip3 install --upgrade git+git://github.com/secdev/scapy
-ref stackoverflow
-    #list functions available on a class
-    #scapy.ls(scapy.ARP())
-    #print(arp_request.summary())
-    #arp_request.show()
 
+ref stackoverflow
+format for ruuning the code
+    1. python3 network_scanner.py --ip <ip_address>
+    or
+    2. chmod the network_scanner.py ie chmod +x network_scanner.py
+    3. run
+       sudo ./network_scanner.py -i <ip_address> or <ip_range>
+      
 '''
+# accept parameters
 def get_target():
     parser = argparse.ArgumentParser(description="Welcome to Arp network scanner type --h for help")
     parser.add_argument("-i","--ip", dest="target", help="specify the target IP in format *.*.*.*/subnet")
@@ -24,6 +25,7 @@ def get_target():
         parser.error("[!] Please enter the target, use --h for help")
     return option
 
+#scans ip
 def scan(ip):
     arp_request = scapy.ARP(pdst=ip)
     broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
@@ -36,6 +38,7 @@ def scan(ip):
         client_list.append(client_dict)
     return client_list
 
+#displays output
 def print_requests(result_list):
     print("__________________________________________")
     print("IP\t\t MAC Address\n------------------------------------------")
